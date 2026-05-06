@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Claude Usage</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#0d0d10;--s:#16161a;--s2:#1d1d23;--b:#28282f;--b2:#35353f;
+  --tx:#eeedf4;--tx2:#a09fb5;--mu:#6b6a7e;
+  --cl:#cc785c;--cl2:#e8956d;--clg:rgba(204,120,92,.12);--clb:rgba(204,120,92,.22);
+  --gr:#3dd68c;--am:#f5a623;--rd:#f56565;--bl:#60a5fa;--pu:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{width:360px;background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-size:13px;}
+
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 15px 11px;background:linear-gradient(150deg,#1a1520,#131318);border-bottom:1px solid var(--b);position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(204,120,92,.12),transparent 65%);pointer-events:none;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-ico{width:32px;height:32px;background:linear-gradient(135deg,#cc785c,#e8956d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 0 1px rgba(204,120,92,.3),0 4px 14px rgba(204,120,92,.35);}
+.logo-t{font-weight:700;font-size:13.5px;letter-spacing:-.3px;}
+.logo-s{color:var(--mu);font-size:10px;margin-top:1px;}
+.obtn{background:var(--clg);border:1px solid var(--clb);color:var(--cl2);padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s;}
+.obtn:hover{background:rgba(204,120,92,.25);}
+
+.live{display:flex;align-items:center;gap:6px;padding:5px 15px;background:var(--s);border-bottom:1px solid var(--b);}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot.on{background:var(--gr);animation:pulse 2s infinite;}
+.dot.off{background:var(--mu);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ltxt{font-size:10.5px;color:var(--tx2);flex:1;}
+.lsrc{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid var(--b2);background:var(--s2);}
+
+.tabs{display:flex;background:var(--s);border-bottom:1px solid var(--b);}
+.tab{flex:1;padding:9px 0;font-size:11.5px;font-weight:500;color:var(--mu);background:none;border:none;cursor:pointer;font-family:inherit;transition:.15s;position:relative;}
+.tab.on{color:var(--cl2);}
+.tab.on::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--cl);border-radius:2px 2px 0 0;}
+
+.pnl{display:none;}.pnl.on{display:block;}
+
+/* Usage */
+.uwrap{padding:12px 14px;display:flex;flex-direction:column;gap:9px;}
+.ucard{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 13px;position:relative;overflow:hidden;}
+.ucard.warn{border-color:rgba(245,166,35,.3);}.ucard.crit{border-color:rgba(245,101,101,.35);}
+.uacc{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;}
+.uhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.ulbl{font-size:10px;color:var(--tx2);font-weight:600;text-transform:uppercase;letter-spacing:.8px;}
+.upct{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;line-height:1;}
+.ubar{background:var(--s2);border-radius:5px;height:8px;overflow:hidden;margin-bottom:7px;}
+.ufill{height:100%;border-radius:5px;transition:width .6s cubic-bezier(.34,1.2,.64,1);}
+.ufoot{display:flex;justify-content:space-between;font-size:10.5px;color:var(--tx2);}
+.usta{font-weight:600;}
+.unums{display:flex;align-items:baseline;gap:4px;margin-bottom:9px;}
+.ubig{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;letter-spacing:-1.5px;}
+.uof{font-family:'DM Mono',monospace;font-size:13px;color:var(--mu);}
+.utag{font-size:9.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--b2);background:var(--s2);color:var(--mu);}
+.rawbtn{background:transparent;border:1px solid var(--b);color:var(--mu);width:100%;padding:5px;border-radius:7px;font-size:10.5px;cursor:pointer;font-family:inherit;transition:.15s;}
+.rawbtn:hover{border-color:var(--cl);color:var(--cl2);}
+.rawpre{display:none;margin-top:7px;background:var(--s2);border:1px solid var(--b);border-radius:7px;padding:9px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tx2);white-space:pre-wrap;word-break:break-all;max-height:120px;overflow-y:auto;}
+.nod{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px;}
+.nod-t{font-size:12px;font-weight:600;margin-bottom:5px;}
+.nod-b{font-size:11px;color:var(--tx2);line-height:1.6;}
+.step{display:flex;gap:7px;margin-top:8px;align-items:flex-start;}
+.sn{background:var(--clg);color:var(--cl2);border:1px solid var(--clb);border-radius:50%;width:17px;height:17px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step span{font-size:11px;color:var(--tx2);}
+
+/* History */
+.hwrap{padding:12px 14px;}
+.htbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.httl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);}
+.hacts{display:flex;gap:6px;}
+.hbtn{font-size:10.5px;color:var(--mu);background:none;border:1px solid var(--b);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit;transition:.15s;}
+.hbtn:hover{color:var(--tx);border-color:var(--b2);}
+.hbtn.exp:hover{color:var(--bl);border-color:rgba(96,165,250,.4);}
+.hbtn.clr:hover{color:var(--rd);border-color:rgba(245,101,101,.4);}
+.hsum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.hsc{background:var(--s);border:1px solid var(--b);border-radius:8px;padding:8px 4px;text-align:center;}
+.hsv{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;}
+.hsl{font-size:9px;color:var(--mu);margin-top:2px;}
+.conv{background:var(--s);border:1px solid var(--b);border-radius:9px;margin-bottom:7px;overflow:hidden;transition:border-color .15s;}
+.conv:hover{border-color:var(--b2);}
+.ctop{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;}
+.cico{width:28px;height:28px;border-radius:7px;background:var(--clg);border:1px solid var(--clb);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.cinfo{flex:1;min-width:0;}
+.cname{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.cmeta{font-size:10px;color:var(--mu);display:flex;align-items:center;gap:5px;}
+.mbadge{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600;}
+.mb-s{background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.2);}
+.mb-o{background:rgba(204,120,92,.12);color:#e8956d;border:1px solid rgba(204,120,92,.2);}
+.mb-h{background:rgba(61,214,140,.12);color:#3dd68c;border:1px solid rgba(61,214,140,.2);}
+.mb-u{background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.2);}
+.clink{font-size:10px;color:var(--cl2);text-decoration:none;flex-shrink:0;padding:3px 9px;border-radius:5px;background:var(--clg);border:1px solid var(--clb);transition:.15s;}
+.clink:hover{background:rgba(204,120,92,.22);}
+.cbars{padding:0 12px 10px;display:flex;flex-direction:column;gap:5px;}
+.brow{display:flex;align-items:center;gap:7px;}
+.blbl{font-size:9.5px;color:var(--mu);width:42px;flex-shrink:0;}
+.btrack{flex:1;background:var(--s2);border-radius:3px;height:6px;overflow:hidden;}
+.bfill{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.34,1.2,.64,1);}
+.bval{font-family:'DM Mono',monospace;font-size:10.5px;min-width:52px;text-align:right;flex-shrink:0;font-weight:500;}
+.empty{text-align:center;padding:28px 16px;color:var(--mu);}
+.empty .ei{font-size:28px;margin-bottom:8px;}
+.empty p{font-size:11.5px;line-height:1.6;}
+
+/* ── NOTIFICATIONS TAB ── */
+.nwrap{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+
+/* Locked state */
+.lock-card{background:linear-gradient(135deg,#1a1520,#16131d);border:1px solid rgba(167,139,250,.25);border-radius:12px;padding:20px 16px;text-align:center;position:relative;overflow:hidden;}
+.lock-card::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:120px;height:120px;background:radial-gradient(circle,rgba(167,139,250,.12),transparent 70%);pointer-events:none;}
+.lock-icon{font-size:32px;margin-bottom:10px;}
+.lock-title{font-size:14px;font-weight:700;margin-bottom:6px;letter-spacing:-.2px;}
+.lock-desc{font-size:11.5px;color:var(--tx2);line-height:1.6;margin-bottom:14px;}
+.lock-features{text-align:left;background:var(--s2);border:1px solid var(--b);border-radius:8px;padding:10px 12px;margin-bottom:14px;}
+.lock-feat{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--tx2);margin-bottom:6px;}
+.lock-feat:last-child{margin-bottom:0;}
+.lock-feat::before{content:'🔔';font-size:12px;flex-shrink:0;}
+.unlock-btn{display:block;width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;color:#fff;padding:11px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:-.1px;box-shadow:0 4px 14px rgba(124,58,237,.35);}
+.unlock-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,.45);}
+.unlock-price{font-size:10px;opacity:.8;margin-top:3px;}
+
+/* Key input */
+.key-wrap{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px 13px;}
+.key-title{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;}
+.key-row{display:flex;gap:6px;}
+.key-input{flex:1;background:var(--s2);border:1px solid var(--b);color:var(--tx);border-radius:7px;padding:8px 10px;font-size:11.5px;font-family:'DM Mono',monospace;transition:border-color .15s;}
+.key-input:focus{outline:none;border-color:var(--pu);}
+.key-input::placeholder{color:var(--mu);}
+.key-btn{background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:var(--pu);padding:8px 14px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;}
+.key-btn:hover{background:rgba(167,139,250,.25);}
+.key-msg{font-size:10.5px;margin-top:6px;min-height:14px;}
+.key-msg.ok{color:var(--gr);}
+.key-msg.err{color:var(--rd);}
+
+/* Unlocked state */
+.notif-active{background:var(--s);border:1px solid rgba(61,214,140,.2);border-radius:10px;padding:12px 13px;}
+.notif-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.notif-badge{font-size:10px;padding:2px 9px;border-radius:20px;background:rgba(61,214,140,.12);color:var(--gr);border:1px solid rgba(61,214,140,.2);font-weight:600;}
+.notif-title{font-size:12px;font-weight:600;}
+.thresh-list{display:flex;flex-direction:column;gap:6px;}
+.thresh{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--s2);border-radius:7px;border:1px solid var(--b);transition:opacity .2s;}
+.thresh-toggle{display:flex;align-items:center;gap:6px;flex:1;cursor:pointer;}
+.thresh-cb{accent-color:var(--pu);width:13px;height:13px;cursor:pointer;flex-shrink:0;}
+.thresh-lbl{font-size:11.5px;color:var(--tx2);}
+.thresh-val{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;white-space:nowrap;}
+.thresh-del{background:none;border:none;color:var(--mu);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;transition:color .15s;flex-shrink:0;}
+.thresh-del:hover{color:var(--rd);}
+.notif-sub{font-size:10.5px;color:var(--mu);margin-bottom:9px;}
+
+/* Footer */
+.ftr{padding:7px 15px;border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;background:var(--s);}
+.fn{color:var(--mu);font-size:10px;}
+.rbtn{background:none;border:none;color:var(--mu);cursor:pointer;font-size:16px;padding:2px 4px;border-radius:4px;transition:.2s;line-height:1;}
+.rbtn:hover{color:var(--tx);}
+@keyframes spin{to{transform:rotate(360deg)}}.spinning{animation:spin .5s linear;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">
+    <div class="logo-ico">✦</div>
+    <div>
+      <div class="logo-t">Claude Usage</div>
+      <div class="logo-s">Real-time · Per-chat tracking</div>
+    </div>
+  </div>
+  <button class="obtn" id="open-claude">Open Claude ↗</button>
+</div>
+
+<div class="live">
+  <div class="dot off" id="dot"></div>
+  <span class="ltxt" id="ltxt">Loading…</span>
+  <span class="lsrc" id="lsrc" style="color:var(--mu)">—</span>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="usage">📊 Usage</button>
+  <button class="tab" data-p="history">🕒 History</button>
+  <button class="tab" data-p="notif">🔔 Alerts</button>
+</div>
+
+<!-- USAGE -->
+<div class="pnl on" id="p-usage">
+  <div class="uwrap">
+    <div class="nod" id="nod">
+      <div class="nod-t">⚡ Waiting for data</div>
+      <div class="nod-b">Open claude.ai — syncs automatically.</div>
+      <div class="step"><span class="sn">1</span><span>Open claude.ai (click above)</span></div>
+      <div class="step"><span class="sn">2</span><span>Click ⟳ to refresh</span></div>
+    </div>
+    <div id="cards-area"></div>
+    <div id="raw-wrap" style="display:none">
+      <button class="rawbtn" id="raw-btn">View raw API response ▾</button>
+      <pre class="rawpre" id="raw-pre"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="pnl" id="p-history">
+  <div class="hwrap">
+    <div class="htbar">
+      <span class="httl">Last 10 Conversations</span>
+      <div class="hacts">
+        <button class="hbtn exp" id="export-btn">⬇ Export</button>
+        <button class="hbtn clr" id="clr-btn">✕ Clear</button>
+      </div>
+    </div>
+    <div class="hsum" id="hsum" style="display:none">
+      <div class="hsc"><div class="hsv" id="hs-c">0</div><div class="hsl">Convs</div></div>
+      <div class="hsc"><div class="hsv" id="hs-m">0</div><div class="hsl">Messages</div></div>
+      <div class="hsc"><div class="hsv" id="hs-5">—</div><div class="hsl">5hr used</div></div>
+    </div>
+    <div id="hlist"></div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="pnl" id="p-notif">
+  <div class="nwrap" id="notif-content">
+    <!-- Injected by JS: either paywall or active state -->
+  </div>
+</div>
+
+<div class="ftr">
+  <span class="fn" id="fn">Claude Usage Tracker</span>
+  <button class="rbtn" id="rbtn">⟳</button>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>

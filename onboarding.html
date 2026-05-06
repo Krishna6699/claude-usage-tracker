@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Welcome to Claude Usage Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+:root{--bg:#0d0d10;--s:#16161a;--s2:#1d1d23;--b:#28282f;--b2:#35353f;--tx:#eeedf4;--tx2:#a09fb5;--mu:#6b6a7e;--cl:#cc785c;--cl2:#e8956d;--clg:rgba(204,120,92,.12);--clb:rgba(204,120,92,.22);--gr:#3dd68c;--am:#f5a623;--rd:#f56565;--pu:#a78bfa;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{width:480px;min-height:600px;background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-size:13px;padding:32px 28px;}
+
+.hero{text-align:center;margin-bottom:28px;position:relative;}
+.hero-icon{width:64px;height:64px;background:linear-gradient(135deg,#cc785c,#e8956d);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 0 0 1px rgba(204,120,92,.3),0 8px 32px rgba(204,120,92,.4);}
+.hero h1{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;}
+.hero p{font-size:13px;color:var(--tx2);line-height:1.6;max-width:340px;margin:0 auto;}
+
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.feat{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:14px 13px;}
+.feat-icon{font-size:20px;margin-bottom:8px;}
+.feat-title{font-size:12px;font-weight:700;margin-bottom:4px;letter-spacing:-.1px;}
+.feat-desc{font-size:11px;color:var(--tx2);line-height:1.5;}
+
+.steps{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:16px;margin-bottom:20px;}
+.steps-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);margin-bottom:12px;}
+.step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+.step:last-child{margin-bottom:0;}
+.step-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#cc785c,#e8956d);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-body .step-title{font-size:12.5px;font-weight:600;margin-bottom:2px;}
+.step-body .step-desc{font-size:11px;color:var(--tx2);line-height:1.5;}
+code{background:var(--s2);border:1px solid var(--b);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10.5px;color:var(--cl2);}
+
+.notif-promo{background:linear-gradient(135deg,#1a1520,#16131d);border:1px solid rgba(167,139,250,.25);border-radius:10px;padding:14px 16px;margin-bottom:20px;display:flex;gap:14px;align-items:center;}
+.notif-promo-icon{font-size:28px;flex-shrink:0;}
+.notif-promo-body .title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.notif-promo-body .desc{font-size:11px;color:var(--tx2);line-height:1.5;}
+.notif-btn{display:inline-block;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;color:#fff;padding:7px 16px;border-radius:7px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:.2s;}
+.notif-btn:hover{opacity:.9;}
+
+.done-btn{display:block;width:100%;background:linear-gradient(135deg,#cc785c,#e8956d);border:none;color:#fff;padding:13px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.2px;box-shadow:0 4px 16px rgba(204,120,92,.35);transition:.2s;}
+.done-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(204,120,92,.45);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-icon">✦</div>
+  <h1>Claude Usage Tracker</h1>
+  <p>Real-time rate limit bars, per-chat usage tracking, and desktop alerts — right in your browser toolbar.</p>
+</div>
+
+<div class="features">
+  <div class="feat">
+    <div class="feat-icon">📊</div>
+    <div class="feat-title">Live Usage Bars</div>
+    <div class="feat-desc">5-Hour, 7-Day, Claude Design & Extra Credits — all in one view.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">🕒</div>
+    <div class="feat-title">Per-Chat History</div>
+    <div class="feat-desc">See how much of your limit each conversation consumed.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">⬇</div>
+    <div class="feat-title">Export Data</div>
+    <div class="feat-desc">Download your chat history as a CSV spreadsheet anytime.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">🔢</div>
+    <div class="feat-title">Badge Counter</div>
+    <div class="feat-desc">5-hour usage % shown on the toolbar icon at a glance.</div>
+  </div>
+</div>
+
+<div class="steps">
+  <div class="steps-title">How to get started</div>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Open claude.ai</div>
+      <div class="step-desc">The extension auto-detects your account and fetches your usage data in the background.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Click the ✦ icon in your toolbar</div>
+      <div class="step-desc">Your live usage bars appear instantly. The <code>📊 Usage</code> tab is your main dashboard.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Send messages on claude.ai</div>
+      <div class="step-desc">The <code>🕒 History</code> tab tracks each conversation and shows % of your limit consumed per chat.</div>
+    </div>
+  </div>
+</div>
+
+<div class="notif-promo">
+  <div class="notif-promo-icon">🔔</div>
+  <div class="notif-promo-body">
+    <div class="title">Unlock Custom Alerts — $3</div>
+    <div class="desc">Set your own alert thresholds (60%, 85%, anything). Get desktop notifications before you run out.</div>
+    <a class="notif-btn" href="https://ramakrishna27.gumroad.com/l/hjwyk" target="_blank">Get Notifications →</a>
+  </div>
+</div>
+
+<button class="done-btn" onclick="window.close()">Get Started →</button>
+
+</body>
+</html>
